@@ -6,6 +6,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "gulp": "^4.0.2",
+    "gulp-image-resize": "^0.13.1",
     "gulp-imagemin": "^7.1.0"
   }
 }

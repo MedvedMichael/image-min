@@ -1,5 +1,5 @@
 const express = require('express')
-const imageMin = require('./image-min')
+const {imageMin, makePictogram} = require('./image-min')
 const app = express()
 
 const PORT = 3000
@@ -7,5 +7,7 @@ const PORT = 3000
 
 
 app.listen(PORT, () => {
-    imageMin('pictures/HS.jpg')
+    // resizeImage('pictures/HS.jpg')
+    // imageMin('pictures/HS.jpg')
+    makePictogram('pictures/HS.jpg')
 })
