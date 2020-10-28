@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const imagemin = require('gulp-imagemin');
-const imageResize = require('gulp-image-resize')
+const sharp = require('sharp')
 
 // ImageMagick have to be installed on PC/server!!!
 
@@ -23,47 +23,22 @@ const imageMin = (path) => (
     .pipe(gulp.dest('dist/pictures'))
 );
 
-function getFileReadStream (path) {
-    return gulp.src(path)
-}
-
-function manageImage (path, options) { 
-    return this.pipe(imageResize(options))
-}
-
-
-const resizeImage = (path, options) => manageImage(path, {
-        crop: false,
-        upscale: true,
-        ...options
-    })
-
-// //({
-//     width: 640,
-//     // height: 400,
-//     crop: false,
-//     upscale: true
-// }
-const cropImage = (path, options) => manageImage(path, {
-        crop: true,
-        upscale: false,
-        ...options
-    })
-
-
 const makePictogram = (path) => {
-    gulp.src(path).pipe(imageResize({
-        width: 640,
-        crop: false,
-        upscale: true,
-    })).pipe(imageResize({
-        crop:true,
-        upscale:false,
-        height: 50
-    })).pipe(gulp.dest('dist/resized'))
+    const res = path.split('/')
+    const image = sharp(path).resize(640).resize(640, 100, {
+        gravity: 'center'
+    }).toFile(`dist/resized/${res[res.length - 1]}`)
 }
+
+// x=0 y=0 in left-up corner
+const makeSuitablePicture = (path, props) => {
+    const res = path.split('/')
+    sharp(path).extract(props).toFile(`dist/cropped/${res[res.length - 1]}`)
+}
+
 
 module.exports = {
     imageMin,
-    makePictogram
+    makePictogram,
+    makeSuitablePicture
 }
