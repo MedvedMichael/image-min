@@ -1,27 +1,24 @@
-const gulp = require('gulp');
-const imagemin = require('gulp-imagemin');
+
 const sharp = require('sharp')
 
 // ImageMagick have to be installed on PC/server!!!
 
-const imageMin = (path) => (
-    gulp.src(path)
-    .pipe(imagemin([
-        // imagemin.gifsicle({interlaced: true}),
-        imagemin.mozjpeg({
-            quality: 60,
-            progressive: true
-        }),
-        // imagemin.optipng({optimizationLevel: 3}),
-        // imagemin.svgo({
-        //     plugins: [
-        //         {removeViewBox: true},
-        //         {cleanupIDs: false}
-        //     ]
-        // })
-    ]))
-    .pipe(gulp.dest('dist/pictures'))
-);
+const minimizeImage = (path) => {
+    const res = path.split('/')
+    sharp(path)
+    .jpeg({
+        progressive: true,
+        quality: 60,
+        force: false
+    })
+    .png({
+        progressive: true,
+        quality: 60,
+        force: false
+    })
+    .toFile(`dist/minimized/${res[res.length - 1]}`)
+
+};
 
 const makePictogram = (path) => {
     const res = path.split('/')
@@ -38,7 +35,7 @@ const makeSuitablePicture = (path, props) => {
 
 
 module.exports = {
-    imageMin,
+    minimizeImage,
     makePictogram,
     makeSuitablePicture
 }
